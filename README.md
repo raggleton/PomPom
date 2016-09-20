@@ -1,7 +1,7 @@
-# pompom
+# PomPom
 ========
 
-A basic attempt as a Pomodoro timer, since none of the web ones seem to do it right.
+A basic attempt as a Pomodoro timer, since none of the web ones seem to do it right without a gazzilion bells and whistles.
 
 ## requires
 
