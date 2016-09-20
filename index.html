@@ -31,7 +31,7 @@
   <body>
 
     <div class="container-fluid">
-        <h1 >PomPom  <small><i>Robin's Pomodoro timer</i></small></h1>
+        <h1>PomPom  <small><i>Robin's Pomodoro timer</i></small></h1>
     </div>
     <div class="container-fluid">
       <div class="row">
@@ -41,7 +41,6 @@
           </div>
         </div>
         <div class="col-md-3">
-          &nbsp;
           <div class="input-group">
             <span class="input-group-addon" id="basic-addon1"><b>Work time</b></span>
             <input type="text" class="form-control" id="workTime" value="25">
@@ -71,7 +70,7 @@
         <div class="col-md-9" style="text-align:center">
           <button type="button" class="btn btn-success" id="startBtn"><h1>START</h1></button>
           &nbsp;
-          <button type="button" class="btn btn-warning" id="stopBtn"><h1>Stop</h1></button>
+          <button type="button" class="btn btn-warning" id="pauseBtn"><h1>Pause</h1></button>
           &nbsp;
           <button type="button" class="btn btn-danger" id="resetBtn"><h1>Reset</h1></button>
         </div>
@@ -125,8 +124,8 @@
         runner();
       });
 
-      document.getElementById("stopBtn").addEventListener("click", function() {
-        console.log("I have been stopped");
+      document.getElementById("pauseBtn").addEventListener("click", function() {
+        console.log("I have been paused");
         NEXT_STATE = STATE;
         STATE = StateEnum.STOPPED;
         // hold correct time...somehow
