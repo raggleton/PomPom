@@ -135,7 +135,7 @@
         console.log("I have been reset");
         STATE = StateEnum.STOPPED;
         NEXT_STATE = StateEnum.WORK;
-        setTimerDisplay(StateEnum.properties[STATE].text, getUserWorkTime(), 0, "");
+        setTimerDisplay(StateEnum.properties[STATE].text, getUserWorkTime() / 60000, 0, "");
       });
 
       function startTimer() {
