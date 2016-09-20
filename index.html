@@ -95,15 +95,15 @@
       };
 
       function getUserWorkTime() {
-        return parseInt(document.getElementById("workTime").value)
+        return parseInt(document.getElementById("workTime").value) * 60000;
       }
 
       function getUserShortBreakTime() {
-        return parseInt(document.getElementById("shortTime").value)
+        return parseInt(document.getElementById("shortTime").value) * 60000;
       }
 
       function getUserLongBreakTime() {
-        return parseInt(document.getElementById("longTime").value)
+        return parseInt(document.getElementById("longTime").value) * 60000;
       }
 
       function getUserNumShortBreaks() {
@@ -149,7 +149,7 @@
 
         diff = Date.now() - TIME; // in milliseconds
 
-        limit = 0 // in minutes
+        limit = 0 // in milliseconds
 
         if (STATE == StateEnum.WORK)
           limit = getUserWorkTime();
@@ -158,7 +158,7 @@
         else if (STATE == StateEnum.LONG_BREAK)
           limit = getUserLongBreakTime();
 
-        time_left = limit * 60000 - diff;
+        time_left = limit - diff;
         min_left = parseInt(time_left / (1000. * 60));
         sec_left = parseInt((time_left - min_left*60000) / 1000);
 
