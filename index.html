@@ -80,6 +80,117 @@
     </div>
 
 
+    <script>
+      var StateEnum = {
+        WORK: 1,
+        SHORT_BREAK: 2,
+        LONG_BREAK: 3,
+        STOPPED: 4,
+        properties: {
+          1: {text: "Break in"},
+          2: {text: "Back to work in"},
+          3: {text: "Back to work in"},
+          4: {text: "Ready? GO!"},
+        }
+      };
+
+      function getUserWorkTime() {
+        return parseInt(document.getElementById("workTime").value)
+      }
+
+      function getUserShortBreakTime() {
+        return parseInt(document.getElementById("shortTime").value)
+      }
+
+      function getUserLongBreakTime() {
+        return parseInt(document.getElementById("longTime").value)
+      }
+
+      function getUserNumShortBreaks() {
+        return parseInt(document.getElementById("nShort").value);
+      }
+
+      var STATE = StateEnum.STOPPED;
+      var NEXT_STATE = StateEnum.WORK;
+      var TIME = 0;
+
+      document.getElementById("startBtn").addEventListener("click", function() {
+        startTimer();
+        STATE = StateEnum.WORK;
+        if (getUserNumShortBreaks() > 0) {
+          NEXT_STATE = StateEnum.SHORT_BREAK;
+        } else {
+          NEXT_STATE = StateEnum.LONG_BREAK;
+        }
+        runner();
+      });
+
+      document.getElementById("stopBtn").addEventListener("click", function() {
+        console.log("I have been stopped");
+        NEXT_STATE = STATE;
+        STATE = StateEnum.STOPPED;
+        // hold correct time...somehow
+      });
+
+     document.getElementById("resetBtn").addEventListener("click", function() {
+        console.log("I have been reset");
+        STATE = StateEnum.STOPPED;
+        NEXT_STATE = StateEnum.WORK;
+        setTimerDisplay(StateEnum.properties[STATE].text, getUserWorkTime(), 0, "");
+      });
+
+      function startTimer() {
+        TIME = Date.now();
+      }
+
+      function runner() {
+        if (STATE == StateEnum.STOPPED)
+          return;
+
+        diff = Date.now() - TIME; // in milliseconds
+
+        limit = 0 // in minutes
+
+        if (STATE == StateEnum.WORK)
+          limit = getUserWorkTime();
+        else if (STATE == StateEnum.SHORT_BREAK)
+          limit = getUserShortBreakTime();
+        else if (STATE == StateEnum.LONG_BREAK)
+          limit = getUserLongBreakTime();
+
+        time_left = limit * 60000 - diff;
+        min_left = parseInt(time_left / (1000. * 60));
+        sec_left = parseInt((time_left - min_left*60000) / 1000);
+
+        if (time_left <= 0) {
+          // switch state
+          setTimerDisplay("OUT OF TIME", 0, 0, "");
+
+        } else {
+          // no switching, just update display time
+          setTimerDisplay(StateEnum.properties[STATE].text, min_left, sec_left, "");
+        }
+        setTimeout(runner, 500);
+      }
+
+      function setTimerDisplay(textPre, timeMin, timeSec, textPost) {
+        displayStr = "";
+        if (textPre !== "")
+          displayStr += "<h1>" + textPre + "<h1>";
+        timeStr = timeMin;
+        if (timeSec < 10)
+          timeStr += ":0" + timeSec;
+        else
+          timeStr += ":" + timeSec;
+        displayStr += "<h1>" + timeStr + "<h1>";
+        if (textPost !== "")
+          displayStr += "<h1>"+ textPost + "<h1>";
+        document.getElementById("mainDisplay").innerHTML = displayStr;
+      }
+
+
+    </script>
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
