@@ -121,8 +121,10 @@
         STATE = StateEnum.WORK;
         if (getUserNumShortBreaks() > 0) {
           NEXT_STATE = StateEnum.SHORT_BREAK;
+          StateEnum.properties[StateEnum.WORK].text = "Short break in";
         } else {
           NEXT_STATE = StateEnum.LONG_BREAK;
+          StateEnum.properties[StateEnum.WORK].text = "Long break in";
         }
         runner();
       });
@@ -168,14 +170,7 @@
           nextState();
         } else {
           // no switching, just update display time
-          prefix = "";
-          if (STATE == StateEnum.WORK) {
-            prefix = "Short ";
-            if (NEXT_STATE == StateEnum.LONG_BREAK) {
-              prefix = "Long ";
-            }
-          }
-          setTimerDisplay(prefix + StateEnum.properties[STATE].text, min_left, sec_left, "");
+          setTimerDisplay(StateEnum.properties[STATE].text, min_left, sec_left, "");
         }
         setTimeout(runner, 500);
       }
@@ -214,8 +209,10 @@
             // figure out if next break should be a short one or long one
             if (NUM_SHORT_BREAKS_TAKEN < getUserNumShortBreaks()) {
               NEXT_STATE = StateEnum.SHORT_BREAK;
+              StateEnum.properties[StateEnum.WORK].text = "Short break in";
             } else {
               NEXT_STATE = StateEnum.LONG_BREAK;
+              StateEnum.properties[StateEnum.WORK].text = "Long break in";
             }
           } else {
             NEXT_STATE = StateEnum.SHORT_BREAK;
