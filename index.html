@@ -191,7 +191,7 @@
 
         if (time_left <= 0) {
           // switch state
-          nextState();
+          moveToNextState();
         } else {
           // no switching, just update display time
           setTimerDisplay(StateEnum.properties[STATE].text, min_left, sec_left, "");
@@ -214,7 +214,7 @@
         document.getElementById("mainDisplay").innerHTML = displayStr;
       }
 
-      function nextState() {
+      function moveToNextState() {
         startTimer();
         if (STATE == StateEnum.WORK) {
 
