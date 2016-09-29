@@ -85,11 +85,37 @@
         SHORT_BREAK: 2,
         LONG_BREAK: 3,
         STOPPED: 4,
+        PAUSED: 5,
         properties: {
-          1: {text: "break in"},
-          2: {text: "Short break: back to work in"},
-          3: {text: "Long break: back to work in"},
-          4: {text: "Ready? GO!"},
+          1: {text:
+                function(nextState){
+                  if (nextState == StateEnum.SHORT_BREAK){
+                    return "Short break in";
+                  } else {
+                    return "Long break in";
+                  }
+                }
+              },
+          2: {text:
+                function(nextState){
+                  return "Short break: back to work in";
+                }
+              },
+          3: {text:
+                function(nextState){
+                  return "Long break: back to work in";
+                }
+              },
+          4: {text:
+                function(nextState){
+                  return "Stopped. Get going!";
+                }
+              },
+          5: {text:
+                function(nextState){
+                  return "PAUSED";
+                }
+              }
         }
       };
 
@@ -121,10 +147,8 @@
         STATE = StateEnum.WORK;
         if (getUserNumShortBreaks() > 0) {
           NEXT_STATE = StateEnum.SHORT_BREAK;
-          StateEnum.properties[StateEnum.WORK].text = "Short break in";
         } else {
           NEXT_STATE = StateEnum.LONG_BREAK;
-          StateEnum.properties[StateEnum.WORK].text = "Long break in";
         }
         runner();
       });
@@ -140,7 +164,7 @@
         console.log("I have been reset");
         STATE = StateEnum.STOPPED;
         NEXT_STATE = StateEnum.WORK;
-        setTimerDisplay(StateEnum.properties[STATE].text, getUserWorkTime() / 60000, 0, "");
+        setTimerDisplay(StateEnum.properties[STATE].text(NEXT_STATE), getUserWorkTime() / 60000, 0, "");
       });
 
       function startTimer() {
@@ -209,10 +233,8 @@
             // figure out if next break should be a short one or long one
             if (NUM_SHORT_BREAKS_TAKEN < getUserNumShortBreaks()) {
               NEXT_STATE = StateEnum.SHORT_BREAK;
-              StateEnum.properties[StateEnum.WORK].text = "Short break in";
             } else {
               NEXT_STATE = StateEnum.LONG_BREAK;
-              StateEnum.properties[StateEnum.WORK].text = "Long break in";
             }
           } else {
             NEXT_STATE = StateEnum.SHORT_BREAK;
