@@ -93,16 +93,17 @@
         }
       };
 
+      // all times here in ms
       function getUserWorkTime() {
-        return parseInt(document.getElementById("workTime").value) * 60000;
+        return parseFloat(document.getElementById("workTime").value) * 60000;
       }
 
       function getUserShortBreakTime() {
-        return parseInt(document.getElementById("shortTime").value) * 60000;
+        return parseFloat(document.getElementById("shortTime").value) * 60000;
       }
 
       function getUserLongBreakTime() {
-        return parseInt(document.getElementById("longTime").value) * 60000;
+        return parseFloat(document.getElementById("longTime").value) * 60000;
       }
 
       function getUserNumShortBreaks() {
