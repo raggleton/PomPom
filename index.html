@@ -164,11 +164,24 @@
         console.log("I have been reset");
         STATE = StateEnum.STOPPED;
         NEXT_STATE = StateEnum.WORK;
-        setTimerDisplay(StateEnum.properties[STATE].text(NEXT_STATE), getUserWorkTime() / 60000, 0, "");
+        workTime = getUserWorkTime()
+        setTimerDisplay(StateEnum.properties[STATE].text(NEXT_STATE),
+                msToMinutes(workTime),
+                msToSeconds(workTime),
+                "");
       });
 
       function startTimer() {
         TIME_START = Date.now();
+      }
+
+      function msToMinutes(ms) {
+        return parseInt(ms / (1000. * 60));
+      }
+
+      function msToSeconds(ms) {
+        // this convert the remainder milliseconds to seconds
+        return parseInt((ms - msToMinutes(ms)*60000) / 1000);
       }
 
       function runner() {
@@ -186,15 +199,16 @@
           limit = getUserLongBreakTime();
 
         time_left = limit - diff;
-        min_left = parseInt(time_left / (1000. * 60));
-        sec_left = parseInt((time_left - min_left*60000) / 1000);
 
         if (time_left <= 0) {
           // switch state
           moveToNextState();
         } else {
           // no switching, just update display time
-          setTimerDisplay(StateEnum.properties[STATE].text, min_left, sec_left, "");
+          setTimerDisplay(StateEnum.properties[STATE].text(NEXT_STATE),
+                          msToMinutes(time_left),
+                          msToSeconds(time_left),
+                          "");
         }
         setTimeout(runner, 500);
       }
