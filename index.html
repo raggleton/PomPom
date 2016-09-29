@@ -86,9 +86,9 @@
         LONG_BREAK: 3,
         STOPPED: 4,
         properties: {
-          1: {text: "Break in"},
-          2: {text: "Back to work in"},
-          3: {text: "Back to work in"},
+          1: {text: "break in"},
+          2: {text: "Short break: back to work in"},
+          3: {text: "Long break: back to work in"},
           4: {text: "Ready? GO!"},
         }
       };
@@ -112,7 +112,9 @@
 
       var STATE = StateEnum.STOPPED;
       var NEXT_STATE = StateEnum.WORK;
-      var TIME = 0;
+      var TIME_START = 0;
+      var TIME_LEFT = 0; // used when pausing
+      var NUM_SHORT_BREAKS_TAKEN = 0;
 
       document.getElementById("startBtn").addEventListener("click", function() {
         startTimer();
@@ -140,17 +142,16 @@
       });
 
       function startTimer() {
-        TIME = Date.now();
+        TIME_START = Date.now();
       }
 
       function runner() {
         if (STATE == StateEnum.STOPPED)
           return;
 
-        diff = Date.now() - TIME; // in milliseconds
+        diff = Date.now() - TIME_START; // in milliseconds
 
         limit = 0 // in milliseconds
-
         if (STATE == StateEnum.WORK)
           limit = getUserWorkTime();
         else if (STATE == StateEnum.SHORT_BREAK)
@@ -164,11 +165,17 @@
 
         if (time_left <= 0) {
           // switch state
-          setTimerDisplay("OUT OF TIME", 0, 0, "");
-
+          nextState();
         } else {
           // no switching, just update display time
-          setTimerDisplay(StateEnum.properties[STATE].text, min_left, sec_left, "");
+          prefix = "";
+          if (STATE == StateEnum.WORK) {
+            prefix = "Short ";
+            if (NEXT_STATE == StateEnum.LONG_BREAK) {
+              prefix = "Long ";
+            }
+          }
+          setTimerDisplay(prefix + StateEnum.properties[STATE].text, min_left, sec_left, "");
         }
         setTimeout(runner, 500);
       }
@@ -188,6 +195,39 @@
         document.getElementById("mainDisplay").innerHTML = displayStr;
       }
 
+      function nextState() {
+        startTimer();
+        if (STATE == StateEnum.WORK) {
+
+          if (NEXT_STATE == StateEnum.SHORT_BREAK) {
+            STATE = StateEnum.SHORT_BREAK;
+            NEXT_STATE = StateEnum.WORK;
+            NUM_SHORT_BREAKS_TAKEN += 1;
+          } else if (NEXT_STATE == StateEnum.LONG_BREAK) {
+            STATE = StateEnum.LONG_BREAK;
+            NEXT_STATE = StateEnum.WORK;
+          }
+
+        } else if ((STATE == StateEnum.SHORT_BREAK) || (STATE == StateEnum.LONG_BREAK)) {
+
+          if (STATE == StateEnum.SHORT_BREAK) {
+            // figure out if next break should be a short one or long one
+            if (NUM_SHORT_BREAKS_TAKEN < getUserNumShortBreaks()) {
+              NEXT_STATE = StateEnum.SHORT_BREAK;
+            } else {
+              NEXT_STATE = StateEnum.LONG_BREAK;
+            }
+          } else {
+            NEXT_STATE = StateEnum.SHORT_BREAK;
+            NUM_SHORT_BREAKS_TAKEN = 0;
+          }
+          STATE = StateEnum.WORK;
+
+        } else if (STATE == StateEnum.STOPPED) {
+          // what do i do here?
+          NEXT_STATE = StateEnum.WORK;
+        }
+      }
 
     </script>
 
