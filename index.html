@@ -138,7 +138,7 @@
       var NEXT_STATE = StateEnum.WORK;
       var NEXT_STATE_STORE = StateEnum.STOPPED; // for when pausing
 
-      var TIME_START = 0;
+      var TIME_START = 0; // used for each state
       var TIME_OFFSET = 0; // used when pausing
       var PAUSE_START = 0; // used to account for pause
 
@@ -219,16 +219,14 @@
         else if (STATE == StateEnum.LONG_BREAK)
           limit = getUserLongBreakTime();
 
-        time_left = limit - diff + TIME_OFFSET;
+        timeLeft = limit - diff + TIME_OFFSET;
 
-        if (time_left <= 0) {
-          // switch state
+        if (timeLeft <= 0) {
           moveToNextState();
         } else {
-          // no switching, just update display time
           setTimerDisplay(StateEnum.properties[STATE].text(NEXT_STATE),
-                          msToMinutes(time_left),
-                          msToSeconds(time_left),
+                          msToMinutes(timeLeft),
+                          msToSeconds(timeLeft),
                           "");
         }
         setTimeout(runner, 500);
