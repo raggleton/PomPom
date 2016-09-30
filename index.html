@@ -70,8 +70,6 @@
         <div class="col-md-9" style="text-align:center">
           <button type="button" class="btn btn-success" id="startBtn"><h1>START</h1></button>
           &nbsp;
-          <button type="button" class="btn btn-warning" id="pauseBtn"><h1>Pause</h1></button>
-          &nbsp;
           <button type="button" class="btn btn-danger" id="resetBtn"><h1>Reset</h1></button>
         </div>
       </div>
@@ -138,26 +136,48 @@
 
       var STATE = StateEnum.STOPPED;
       var NEXT_STATE = StateEnum.WORK;
+      var NEXT_STATE_STORE = StateEnum.STOPPED; // for when pausing
+
       var TIME_START = 0;
-      var TIME_LEFT = 0; // used when pausing
+      var TIME_OFFSET = 0; // used when pausing
+      var PAUSE_START = 0; // used to account for pause
+
       var NUM_SHORT_BREAKS_TAKEN = 0;
 
       document.getElementById("startBtn").addEventListener("click", function() {
-        startTimer();
-        STATE = StateEnum.WORK;
-        if (getUserNumShortBreaks() > 0) {
-          NEXT_STATE = StateEnum.SHORT_BREAK;
+        if (STATE == StateEnum.STOPPED){
+          // start afresh
+          startTimer();
+          STATE = StateEnum.WORK;
+          if (getUserNumShortBreaks() > 0) {
+            NEXT_STATE = StateEnum.SHORT_BREAK;
+          } else {
+            NEXT_STATE = StateEnum.LONG_BREAK;
+          }
+          document.getElementById("startBtn").innerHTML = "<h1>Pause</h1>";
+          runner();
+        } else if (STATE == StateEnum.PAUSED) {
+          // resume
+          console.log("Let's carry on");
+          TIME_OFFSET = Date.now() - PAUSE_START;
+          PAUSE_START = 0;
+          STATE = NEXT_STATE;
+          NEXT_STATE = NEXT_STATE_STORE;
+          console.log(STATE);
+          console.log(NEXT_STATE);
+          document.getElementById("startBtn").innerHTML = "<h1>Pause</h1>";
+          runner();
         } else {
-          NEXT_STATE = StateEnum.LONG_BREAK;
+          // go into pause mode
+          console.log("I have been paused");
+          NEXT_STATE_STORE = NEXT_STATE;
+          NEXT_STATE = STATE;
+          STATE = StateEnum.PAUSED;
+          PAUSE_START = Date.now();
+          document.getElementById("startBtn").innerHTML = "<h1>Resume</h1>";
+          runner();
         }
-        runner();
-      });
 
-      document.getElementById("pauseBtn").addEventListener("click", function() {
-        console.log("I have been paused");
-        NEXT_STATE = STATE;
-        STATE = StateEnum.STOPPED;
-        // hold correct time...somehow
       });
 
      document.getElementById("resetBtn").addEventListener("click", function() {
@@ -169,6 +189,7 @@
                 msToMinutes(workTime),
                 msToSeconds(workTime),
                 "");
+        document.getElementById("startBtn").innerHTML = "<h1>START</h1>";
       });
 
       function startTimer() {
@@ -185,7 +206,7 @@
       }
 
       function runner() {
-        if (STATE == StateEnum.STOPPED)
+        if (STATE == StateEnum.STOPPED || STATE == StateEnum.PAUSED)
           return;
 
         diff = Date.now() - TIME_START; // in milliseconds
@@ -198,7 +219,7 @@
         else if (STATE == StateEnum.LONG_BREAK)
           limit = getUserLongBreakTime();
 
-        time_left = limit - diff;
+        time_left = limit - diff + TIME_OFFSET;
 
         if (time_left <= 0) {
           // switch state
@@ -229,6 +250,7 @@
       }
 
       function moveToNextState() {
+        TIME_OFFSET = 0;
         startTimer();
         if (STATE == StateEnum.WORK) {
 
@@ -257,8 +279,13 @@
           STATE = StateEnum.WORK;
 
         } else if (STATE == StateEnum.STOPPED) {
-          // what do i do here?
-          NEXT_STATE = StateEnum.WORK;
+          STATE = StateEnum.WORK;
+          if (getUserNumShortBreaks() > 0) {
+            NEXT_STATE = StateEnum.SHORT_BREAK;
+          } else {
+            NEXT_STATE = StateEnum.LONG_BREAK;
+          }
+        } else if (STATE == StateEnum.PAUSED) {
         }
       }
 
