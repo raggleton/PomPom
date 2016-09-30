@@ -154,34 +154,32 @@
           } else {
             NEXT_STATE = StateEnum.LONG_BREAK;
           }
+          document.getElementById("startBtn").className = "btn btn-warning";
           document.getElementById("startBtn").innerHTML = "<h1>Pause</h1>";
           runner();
         } else if (STATE == StateEnum.PAUSED) {
           // resume
-          console.log("Let's carry on");
           TIME_OFFSET = Date.now() - PAUSE_START;
           PAUSE_START = 0;
           STATE = NEXT_STATE;
           NEXT_STATE = NEXT_STATE_STORE;
-          console.log(STATE);
-          console.log(NEXT_STATE);
+          document.getElementById("startBtn").className = "btn btn-warning";
           document.getElementById("startBtn").innerHTML = "<h1>Pause</h1>";
           runner();
         } else {
           // go into pause mode
-          console.log("I have been paused");
           NEXT_STATE_STORE = NEXT_STATE;
           NEXT_STATE = STATE;
           STATE = StateEnum.PAUSED;
           PAUSE_START = Date.now();
           document.getElementById("startBtn").innerHTML = "<h1>Resume</h1>";
+          document.getElementById("startBtn").className = "btn btn-success";
           runner();
         }
 
       });
 
      document.getElementById("resetBtn").addEventListener("click", function() {
-        console.log("I have been reset");
         STATE = StateEnum.STOPPED;
         NEXT_STATE = StateEnum.WORK;
         workTime = getUserWorkTime()
@@ -190,6 +188,7 @@
                 msToSeconds(workTime),
                 "");
         document.getElementById("startBtn").innerHTML = "<h1>START</h1>";
+        document.getElementById("startBtn").className = "btn btn-success";
       });
 
       function startTimer() {
