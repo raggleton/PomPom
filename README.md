@@ -6,6 +6,16 @@ A basic attempt as a Pomodoro timer, since none of the web ones seem to do it ri
 
 ## requires
 
-Literally nothing. None of that leftpad nonsense here.
 If you're offline, then the bootstrap (and therefore possibly jQuery) libraries will be needed.
+
+To use sounds whilst developing, you should note that by default browsers block local files.
+To get around this, just make a local httpserver in the `PomPom` dir:
+
+```
+python -m SimpleHTTPServer
+```
+
+Then just go to `http://localhost:8000/` in your browser.
+Note that it doesn't seem to like local versions of bootstrap library, so working offline is a pain...
+
 
