@@ -130,6 +130,12 @@
         }
       };
 
+      var sound = new Howl({
+        src: ['foghorn-daniel_simon.mp3']
+      });
+
+
+
       // all times here in ms
       function getUserWorkTime() {
         return parseFloat(document.getElementById("workTime").value) * 60000;
@@ -259,18 +265,12 @@
         document.getElementById("mainDisplay").innerHTML = displayStr;
       }
 
-      var sound = new Howl({
-        // src: ['foghorn-daniel_simon.mp3']
-        src: ['http://localhost:8000/foghorn-daniel_simon.mp3']
-      });
-
       function moveToNextState() {
         TIME_OFFSET = 0;
         startTimer();
         if (STATE != StateEnum.PAUSED) {
           // play sound
           sound.play();
-          // playSound();
         }
         if (STATE == StateEnum.WORK) {
 
