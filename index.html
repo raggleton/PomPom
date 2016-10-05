@@ -13,6 +13,15 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
+    <style>
+      button h1 {
+          margin-top: 20px;
+          margin-bottom: 20px;
+          margin-left: 20px;
+          margin-right: 20px;
+      }
+    </style>
+
     <!-- <link rel="stylesheet" href="custom.css"> -->
     <!-- FOR LOCAL TESTING: -->
     <!-- Bootstrap core css-->
@@ -30,17 +39,15 @@
 
   <body>
 
-    <div class="container-fluid">
-        <h1>PomPom  <small><i>Robin's Pomodoro timer</i></small></h1>
-    </div>
-    <div class="container-fluid">
+    <div class="container">
+      <h1>PomPom  <small><i>Robin's Pomodoro timer</i></small></h1>
       <div class="row">
         <div class="col-md-8">
           <div class="jumbotron" style="text-align:center" id="mainDisplay">
             <h1>Ready? GO!</h1>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <div class="input-group">
             <span class="input-group-addon" id="basic-addon1"><b>Work time</b></span>
             <input type="text" class="form-control" id="workTime" value="25">
@@ -60,7 +67,7 @@
           </div>
           &nbsp;
           <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1"><b># of short breaks</b></span>
+            <span class="input-group-addon" id="basic-addon1"><b class="hidden-xs">Number</b><b class="visible-xs-inline">#</b><b> of short breaks</b></span>
             <input type="text" class="form-control" id="nShort" value="3">
           </div>
           &nbsp;
@@ -68,7 +75,7 @@
       </div>
       <div class="row">
         <div class="col-md-8" style="text-align:center">
-          <button type="button" class="btn btn-success" id="startBtn"><h1>START</h1></button>
+          <button type="button" class="btn btn-success" id="startBtn"><h1>Start</h1></button>
           &nbsp;
           <button type="button" class="btn btn-danger" id="resetBtn"><h1>Reset</h1></button>
         </div>
@@ -76,7 +83,7 @@
 
     </div>
 
-<a href="https://github.com/raggleton/PomPom" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+<!--<a href="https://github.com/raggleton/PomPom" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>-->
 
     <script>
       var StateEnum = {
@@ -112,7 +119,7 @@
               },
           5: {text:
                 function(nextState){
-                  return "PAUSED";
+                  return "Paused";
                 }
               }
         }
