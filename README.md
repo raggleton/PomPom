@@ -18,4 +18,4 @@ python -m SimpleHTTPServer
 Then just go to `http://localhost:8000/` in your browser.
 Note that it doesn't seem to like local versions of bootstrap library, so working offline is a pain...
 
-
+Sounds taken from <http://soundbible.com/royalty-free-sounds-1.html>, specifically <http://soundbible.com/2142-FogHorn-Barge.html> and <http://soundbible.com/2148-Chinese-Gong.html>.
