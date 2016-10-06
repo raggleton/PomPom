@@ -130,10 +130,20 @@
         }
       };
 
-      var sound = new Howl({
-        src: ['foghorn-daniel_simon.mp3']
+      var foghornSound = new Howl({
+        src: ['foghorn-daniel_simon.mp3'],
+        volume: 0.5,
+        rate: 1
       });
 
+      var gongSound = new Howl({
+        src: ['chinese-gong-daniel_simon.mp3'],
+        volume: 0.5,
+        rate: 1
+      });
+
+      var pauseSound = foghornSound;
+      var startSound = gongSound;
 
 
       // all times here in ms
@@ -167,6 +177,7 @@
         if (STATE == StateEnum.STOPPED){
           // start afresh
           startTimer();
+          startSound.play();
           STATE = StateEnum.WORK;
           if (getUserNumShortBreaks() > 0) {
             NEXT_STATE = StateEnum.SHORT_BREAK;
@@ -270,7 +281,7 @@
         startTimer();
         if (STATE != StateEnum.PAUSED) {
           // play sound
-          sound.play();
+          pauseSound.play();
         }
         if (STATE == StateEnum.WORK) {
 
