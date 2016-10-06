@@ -76,7 +76,11 @@
             <input type="text" class="form-control" id="nShort" value="3">
           </div>
           &nbsp;
+          <div class="checkbox">
+            <label><input type="checkbox" value="" id="playSoundInput" checked="true">Play sounds</label>
+          </div>
         </div>
+          &nbsp;
       </div>
       <div class="row">
         <div class="col-md-8" style="text-align:center">
@@ -145,6 +149,9 @@
       var pauseSound = foghornSound;
       var startSound = gongSound;
 
+      function playSounds() {
+        return document.getElementById("playSoundInput").checked;
+      }
 
       // all times here in ms
       function getUserWorkTime() {
@@ -177,7 +184,8 @@
         if (STATE == StateEnum.STOPPED){
           // start afresh
           startTimer();
-          startSound.play();
+          if (playSounds())
+            startSound.play();
           STATE = StateEnum.WORK;
           if (getUserNumShortBreaks() > 0) {
             NEXT_STATE = StateEnum.SHORT_BREAK;
@@ -281,7 +289,8 @@
         startTimer();
         if (STATE != StateEnum.PAUSED) {
           // play sound
-          pauseSound.play();
+          if (playSounds())
+            pauseSound.play();
         }
         if (STATE == StateEnum.WORK) {
 
