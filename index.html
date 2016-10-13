@@ -64,9 +64,11 @@
 
               <div class="col-md-5">
                 <div class="input-group">
-                  <span class="input-group-addon" for="workSoundSel">
-                    <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
-                    <span class="sr-only">Sound:</span>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" id="workSoundBtn">
+                      <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+                      <span class="sr-only">Sound:</span>
+                    </button>
                   </span>
                   <select class="form-control" id="workSoundSel"></select>
                 </div>
@@ -84,9 +86,11 @@
 
               <div class="col-md-5">
                 <div class="input-group">
-                  <span class="input-group-addon" for="shortSoundSel">
-                    <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
-                    <span class="sr-only">Sound:</span>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" id="shortSoundBtn">
+                      <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+                      <span class="sr-only">Sound:</span>
+                    </button>
                   </span>
                   <select class="form-control" id="shortSoundSel"></select>
                 </div>
@@ -104,9 +108,11 @@
 
               <div class="col-md-5">
                 <div class="input-group">
-                  <span class="input-group-addon" for="longSoundSel">
-                    <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
-                    <span class="sr-only">Sound:</span>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" id="longSoundBtn">
+                      <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+                      <span class="sr-only">Sound:</span>
+                    </button>
                   </span>
                   <select class="form-control" id="longSoundSel"></select>
                 </div>
@@ -228,6 +234,18 @@
           sound.play();
         }
       }
+
+      document.getElementById("workSoundBtn").addEventListener("click", function() {
+        playSound(document.getElementById("workSoundSel"));
+      });
+
+      document.getElementById("shortSoundBtn").addEventListener("click", function() {
+        playSound(document.getElementById("shortSoundSel"));
+      });
+
+      document.getElementById("longSoundBtn").addEventListener("click", function() {
+        playSound(document.getElementById("longSoundSel"));
+      });
 
       // all times here in ms
       function getUserWorkTime() {
