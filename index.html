@@ -68,11 +68,7 @@
                     <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
                     <span class="sr-only">Sound:</span>
                   </span>
-                  <select class="form-control" id="workSoundSel">
-                    <option>Foghorn</option>
-                    <option>Gong</option>
-                    <option>None</option>
-                  </select>
+                  <select class="form-control" id="workSoundSel"></select>
                 </div>
               </div>
             </div>
@@ -92,11 +88,7 @@
                     <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
                     <span class="sr-only">Sound:</span>
                   </span>
-                  <select class="form-control" id="shortSoundSel">
-                    <option>Foghorn</option>
-                    <option>Gong</option>
-                    <option>None</option>
-                  </select>
+                  <select class="form-control" id="shortSoundSel"></select>
                 </div>
               </div>
             </div>
@@ -116,11 +108,7 @@
                     <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
                     <span class="sr-only">Sound:</span>
                   </span>
-                  <select class="form-control" id="longSoundSel">
-                    <option>Foghorn</option>
-                    <option>Gong</option>
-                    <option>None</option>
-                  </select>
+                  <select class="form-control" id="longSoundSel"></select>
                 </div>
               </div>
             </div>
@@ -201,12 +189,44 @@
         rate: 1
       });
 
-      var pauseSound = foghornSound;
-      var startSound = gongSound;
+      var sounds = {
+        "Foghorn": foghornSound,
+        "Gong": gongSound,
+        "None": null,
+      }
 
-      function playSounds() {
-        return true;
-        // return document.getElementById("playSoundInput").checked;
+      function populateSoundSelector(selector) {
+        for (var skey in sounds){
+          var opt = document.createElement('option');
+          opt.text = skey;
+          selector.appendChild(opt);
+        }
+      }
+
+      populateSoundSelector(document.getElementById("workSoundSel"));
+      populateSoundSelector(document.getElementById("shortSoundSel"));
+      populateSoundSelector(document.getElementById("longSoundSel"));
+
+      //  set default sounds
+      function setSelectedSound(selector, soundName) {
+        var soundKeys = Object.keys(sounds);
+        var ind = soundKeys.findIndex(function (label) {return label == soundName;});
+        if (ind == -1) {
+          console.log("I don't know that sound, using first entry");
+          selector.selectedIndex = 0;
+        }
+        selector.selectedIndex = ind;
+      }
+
+      setSelectedSound(document.getElementById("workSoundSel"), "Foghorn");
+      setSelectedSound(document.getElementById("shortSoundSel"), "Gong");
+      setSelectedSound(document.getElementById("longSoundSel"), "Gong");
+
+      function playSound(selector) {
+        var sound = sounds[selector.value];
+        if (sound) {
+          sound.play();
+        }
       }
 
       // all times here in ms
@@ -240,8 +260,7 @@
         if (STATE == StateEnum.STOPPED){
           // start afresh
           startTimer();
-          if (playSounds())
-            startSound.play();
+          playSound(document.getElementById("workSoundSel"));
           STATE = StateEnum.WORK;
           if (getUserNumShortBreaks() > 0) {
             NEXT_STATE = StateEnum.SHORT_BREAK;
@@ -253,6 +272,7 @@
           runner();
         } else if (STATE == StateEnum.PAUSED) {
           // resume
+          playSound(document.getElementById("workSoundSel"));
           TIME_OFFSET = Date.now() - PAUSE_START;
           PAUSE_START = 0;
           STATE = NEXT_STATE;
@@ -343,18 +363,15 @@
       function moveToNextState() {
         TIME_OFFSET = 0;
         startTimer();
-        if (STATE != StateEnum.PAUSED) {
-          // play sound
-          if (playSounds())
-            pauseSound.play();
-        }
         if (STATE == StateEnum.WORK) {
 
           if (NEXT_STATE == StateEnum.SHORT_BREAK) {
+            playSound(document.getElementById("shortSoundSel"));
             STATE = StateEnum.SHORT_BREAK;
             NEXT_STATE = StateEnum.WORK;
             NUM_SHORT_BREAKS_TAKEN += 1;
           } else if (NEXT_STATE == StateEnum.LONG_BREAK) {
+            playSound(document.getElementById("longSoundSel"));
             STATE = StateEnum.LONG_BREAK;
             NEXT_STATE = StateEnum.WORK;
           }
@@ -372,9 +389,11 @@
             NEXT_STATE = StateEnum.SHORT_BREAK;
             NUM_SHORT_BREAKS_TAKEN = 0;
           }
+          playSound(document.getElementById("workSoundSel"));
           STATE = StateEnum.WORK;
 
         } else if (STATE == StateEnum.STOPPED) {
+          playSound(document.getElementById("workSoundSel"));
           STATE = StateEnum.WORK;
           if (getUserNumShortBreaks() > 0) {
             NEXT_STATE = StateEnum.SHORT_BREAK;
