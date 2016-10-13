@@ -277,16 +277,9 @@
       document.getElementById("startBtn").addEventListener("click", function() {
         if (STATE == StateEnum.STOPPED){
           // start afresh
-          startTimer();
-          playSound(document.getElementById("workSoundSel"));
-          STATE = StateEnum.WORK;
-          if (getUserNumShortBreaks() > 0) {
-            NEXT_STATE = StateEnum.SHORT_BREAK;
-          } else {
-            NEXT_STATE = StateEnum.LONG_BREAK;
-          }
-          document.getElementById("startBtn").className = "btn btn-warning";
+          moveToNextState();
           document.getElementById("startBtn").innerHTML = "<h1>Pause</h1>";
+          document.getElementById("startBtn").className = "btn btn-warning";
           runner();
         } else if (STATE == StateEnum.PAUSED) {
           // resume
@@ -295,8 +288,8 @@
           PAUSE_START = 0;
           STATE = NEXT_STATE;
           NEXT_STATE = NEXT_STATE_STORE;
-          document.getElementById("startBtn").className = "btn btn-warning";
           document.getElementById("startBtn").innerHTML = "<h1>Pause</h1>";
+          document.getElementById("startBtn").className = "btn btn-warning";
           runner();
         } else {
           // go into pause mode
@@ -311,7 +304,7 @@
 
       });
 
-     document.getElementById("resetBtn").addEventListener("click", function() {
+      document.getElementById("resetBtn").addEventListener("click", function() {
         STATE = StateEnum.STOPPED;
         NEXT_STATE = StateEnum.WORK;
         workTime = getUserWorkTime()
