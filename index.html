@@ -45,43 +45,91 @@
     <div class="container">
       <h1>PomPom  <small><i>Robin's Pomodoro timer</i></small></h1>
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
           <div class="jumbotron" style="text-align:center" id="mainDisplay">
             <h1>Ready? GO!</h1>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1"><b>Work time</b></span>
-            <input type="text" class="form-control" id="workTime" value="25">
-            <span class="input-group-addon" id="basic-addon1">minutes</span>
-          </div>
-          &nbsp;
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1"><b>Short break time</b></span>
-            <input type="text" class="form-control" id="shortTime" value="5">
-            <span class="input-group-addon" id="basic-addon1">minutes</span>
-          </div>
-          &nbsp;
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1"><b>Long break time</b></span>
-            <input type="text" class="form-control" id="longTime" value="15">
-            <span class="input-group-addon" id="basic-addon1">minutes</span>
-          </div>
-          &nbsp;
-          <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1"><b class="hidden-xs">Number</b><b class="visible-xs-inline">#</b><b> of short breaks</b></span>
-            <input type="text" class="form-control" id="nShort" value="3">
-          </div>
-          &nbsp;
-          <div class="checkbox">
-            <label><input type="checkbox" value="" id="playSoundInput" checked="true">Play sounds</label>
-          </div>
+        <div class="col-md-5">
+          <form class="form-horizontal">
+
+            <div class="form-group">
+              <div class="col-md-7">
+                <div class="input-group">
+                  <span class="input-group-addon" for="workTime"><b>Work</b></span>
+                  <input type="text" class="form-control" id="workTime" value="25">
+                  <span class="input-group-addon" for="workTime">minutes</span>
+                </div>
+              </div>
+
+              <div class="col-md-5">
+                <div class="input-group">
+                  <span class="input-group-addon" for="workSoundSel"><b>Sound</b></span>
+                  <select class="form-control" id="workSoundSel">
+                    <option>Foghorn</option>
+                    <option>Gong</option>
+                    <option>None</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-7">
+                <div class="input-group">
+                  <span class="input-group-addon" for="shortTime"><b>Short break</b></span>
+                  <input type="text" class="form-control" id="shortTime" value="5">
+                  <span class="input-group-addon" for="shortTime">minutes</span>
+                </div>
+              </div>
+
+              <div class="col-md-5">
+                <div class="input-group">
+                  <span class="input-group-addon" for="shortSoundSel"><b>Sound</b></span>
+                  <select class="form-control" id="shortSoundSel">
+                    <option>Foghorn</option>
+                    <option>Gong</option>
+                    <option>None</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-7">
+                <div class="input-group">
+                  <span class="input-group-addon" for="longTime"><b>Long break</b></span>
+                  <input type="text" class="form-control" id="longTime" value="15">
+                  <span class="input-group-addon" for="longTime">minutes</span>
+                </div>
+              </div>
+
+              <div class="col-md-5">
+                <div class="input-group">
+                  <span class="input-group-addon" for="longSoundSel"><b>Sound</b></span>
+                  <select class="form-control" id="longSoundSel">
+                    <option>Foghorn</option>
+                    <option>Gong</option>
+                    <option>None</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-7">
+                <div class="input-group">
+                  <span class="input-group-addon" id="basic-addon1"><b class="hidden-xs">Number</b><b class="visible-xs-inline">#</b><b> of short breaks</b></span>
+                  <input type="text" class="form-control" id="nShort" value="3">
+                </div>
+              </div>
+            </div>
+
+          </form>
         </div>
-          &nbsp;
       </div>
       <div class="row">
-        <div class="col-md-8" style="text-align:center">
+        <div class="col-md-7" style="text-align:center">
           <button type="button" class="btn btn-success" id="startBtn"><h1>Start</h1></button>
           &nbsp;
           <button type="button" class="btn btn-danger" id="resetBtn"><h1>Reset</h1></button>
@@ -148,7 +196,8 @@
       var startSound = gongSound;
 
       function playSounds() {
-        return document.getElementById("playSoundInput").checked;
+        return true;
+        // return document.getElementById("playSoundInput").checked;
       }
 
       // all times here in ms
