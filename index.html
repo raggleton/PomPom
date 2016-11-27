@@ -195,7 +195,14 @@
         rate: 1
       });
 
+      var tickingSound = new Howl({
+        src: ['sounds/ticking_clock.mp3'],
+        volume: 0.5,
+        rate: 1
+      });
+
       var sounds = {
+        "Ticking": tickingSound,
         "Foghorn": foghornSound,
         "Gong": gongSound,
         "None": null,
@@ -224,8 +231,8 @@
         selector.selectedIndex = ind;
       }
 
-      setSelectedSound(document.getElementById("workSoundSel"), "Foghorn");
-      setSelectedSound(document.getElementById("shortSoundSel"), "Gong");
+      setSelectedSound(document.getElementById("workSoundSel"), "Ticking");
+      setSelectedSound(document.getElementById("shortSoundSel"), "Foghorn");
       setSelectedSound(document.getElementById("longSoundSel"), "Gong");
 
       function playSound(selector) {
