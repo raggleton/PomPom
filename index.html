@@ -126,6 +126,15 @@
                   <input type="text" class="form-control" id="nShort" value="3">
                 </div>
               </div>
+
+              <div class="col-md-5">
+                <div class="input-group">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" value="" id="showNotificationsCheck">
+                      Show changeover notifications
+                  </label>
+                </div>
+              </div>
             </div>
 
           </form>
@@ -378,6 +387,35 @@
         document.getElementById("mainDisplay").innerHTML = displayStr;
       }
 
+      document.getElementById("showNotificationsCheck").addEventListener("click", function() {
+        // Ask for permission to show notifications
+        if ((Notification.permission !== "granted") && (Notification.permission !== "denied")) {
+          Notification.requestPermission();
+        }
+      });
+
+      function showNotification(title) {
+        if (document.getElementById("showNotificationsCheck").checked) {
+          var opts = {
+            body: ""
+          }
+          if (Notification.permission === "granted") {
+            // If it's okay let's create a notification
+            var notification = new Notification(title, opts);
+          }
+
+          // Otherwise, we need to ask the user for permission
+          else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+              // If the user accepts, let's create a notification
+              if (permission === "granted") {
+                var notification = new Notification(title, opts);
+              }
+            });
+          }
+        }
+      }
+
       function moveToNextState() {
         TIME_OFFSET = 0;
         startTimer();
@@ -419,6 +457,14 @@
             NEXT_STATE = StateEnum.LONG_BREAK;
           }
         } else if (STATE == StateEnum.PAUSED) {
+        }
+
+        if (STATE == StateEnum.WORK) {
+          showNotification("Work!");
+        } else if (STATE == StateEnum.SHORT_BREAK) {
+          showNotification("Short break");
+        } else if (STATE == StateEnum.LONG_BREAK) {
+          showNotification("Long break");
         }
       }
 
