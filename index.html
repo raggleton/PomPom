@@ -131,7 +131,7 @@
                 <div class="input-group">
                   <label class="checkbox-inline">
                     <input type="checkbox" value="" id="showNotificationsCheck">
-                      Show changeover notifications
+                      Notifications?
                   </label>
                 </div>
               </div>
@@ -323,7 +323,7 @@
       document.getElementById("resetBtn").addEventListener("click", function() {
         STATE = StateEnum.STOPPED;
         NEXT_STATE = StateEnum.WORK;
-        workTime = getUserWorkTime()
+        workTime = getUserWorkTime();
         setTimerDisplay(StateEnum.properties[STATE].text(NEXT_STATE),
                 msToMinutes(workTime),
                 msToSeconds(workTime),
@@ -395,25 +395,33 @@
       });
 
       function showNotification(title) {
-        if (document.getElementById("showNotificationsCheck").checked) {
-          var opts = {
-            body: ""
-          }
-          if (Notification.permission === "granted") {
-            // If it's okay let's create a notification
-            var notification = new Notification(title, opts);
-          }
+        if (!document.getElementById("showNotificationsCheck").checked)
+          return;
 
-          // Otherwise, we need to ask the user for permission
-          else if (Notification.permission !== 'denied') {
-            Notification.requestPermission(function (permission) {
-              // If the user accepts, let's create a notification
-              if (permission === "granted") {
-                var notification = new Notification(title, opts);
-              }
-            });
-          }
+        var opts = {
+          body: ""
+        };
+        var notificationTimeout = 6000;
+
+        if (Notification.permission === "granted") {
+          // If it's okay let's create a notification
+          createAndHideNotification(title, opts, notificationTimeout);
         }
+
+        // Otherwise, we need to ask the user for permission
+        else if (Notification.permission !== 'denied') {
+          Notification.requestPermission(function (permission) {
+            // If the user accepts, let's create a notification
+            if (permission === "granted") {
+              createAndHideNotification(title, opts, notificationTimeout);
+            }
+          });
+        }
+      }
+
+      function createAndHideNotification(title, opts, timeout) {
+        var notification = new Notification(title, opts);
+        setTimeout(notification.close.bind(notification), timeout);
       }
 
       function moveToNextState() {
