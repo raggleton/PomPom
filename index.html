@@ -327,7 +327,8 @@
         setTimerDisplay(StateEnum.properties[STATE].text(NEXT_STATE),
                 msToMinutes(workTime),
                 msToSeconds(workTime),
-                "");
+                "",
+                true);
         document.getElementById("startBtn").innerHTML = "<h1>START</h1>";
         document.getElementById("startBtn").className = "btn btn-success";
       });
@@ -367,12 +368,13 @@
           setTimerDisplay(StateEnum.properties[STATE].text(NEXT_STATE),
                           msToMinutes(timeLeft),
                           msToSeconds(timeLeft),
-                          "");
+                          "",
+                          true);
         }
         setTimeout(runner, 500);
       }
 
-      function setTimerDisplay(textPre, timeMin, timeSec, textPost) {
+      function setTimerDisplay(textPre, timeMin, timeSec, textPost, doTitle) {
         displayStr = "";
         if (textPre !== "")
           displayStr += "<h1>" + textPre + "<h1>";
@@ -385,6 +387,10 @@
         if (textPost !== "")
           displayStr += "<h1>"+ textPost + "<h1>";
         document.getElementById("mainDisplay").innerHTML = displayStr;
+
+        if (doTitle) {
+          document.title = timeStr;
+        }
       }
 
       document.getElementById("showNotificationsCheck").addEventListener("click", function() {
